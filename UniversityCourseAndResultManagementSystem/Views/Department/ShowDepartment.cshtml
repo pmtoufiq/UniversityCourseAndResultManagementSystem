@@ -1,0 +1,37 @@
+﻿@using UniversityCourseAndResultManagementSystem.Models
+@model List<Department>
+@{
+    ViewBag.Title = "ShowDepartment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>View All Departments</title>
+</head>
+<body>
+    <div>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Department department in Model)
+                {
+                    <tr>
+                        <td>@department.DepartmentCode</td>
+                        <td>@department.DepartmentName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+

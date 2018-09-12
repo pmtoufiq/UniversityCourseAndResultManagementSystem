@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "SaveDepartment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string message = ViewBag.Message;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Save Department</title>
+    <style>
+        label.error {
+            color: red;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <form method="POST" id="saveDepartmentForm">
+            <table>
+                <tr>
+                    <td><label for="DepartmentCode">Department Code</label></td>
+                    <td><input type="text" id="DepartmentCode" name="DepartmentCode" /></td>
+                </tr>
+                <tr>
+                    <td><label for="DepartmentName">Department Name</label></td>
+                    <td><input type="text" id="DepartmentName" name="DepartmentName" /></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Save" /></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    @ViewBag.Message
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script>
+        $("#saveDepartmentForm").validate({
+            rules: {
+                DepartmentCode: {
+                    required: true,
+                    maxlength: 7,
+                    minlength: 2
+                },
+                DepartmentName: "required"
+            },
+            messages: {
+                DepartmentCode: {
+                    required: "Please enter a department code",
+                    maxlength: "Department code can't be long more than 7 characters",
+                    minlength: "Department code can't be short less than 2 characters"
+                },
+                DepartmentName: "Please enter department name"
+            }
+        });
+    </script>
+</body>
+</html>
+
