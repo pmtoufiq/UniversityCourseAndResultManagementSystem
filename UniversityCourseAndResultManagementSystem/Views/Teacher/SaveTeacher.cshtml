@@ -1,0 +1,126 @@
+﻿@using UniversityCourseAndResultManagementSystem.Models
+
+@{
+    ViewBag.Title = "SaveTeacher";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string message = ViewBag.Message;
+    List<Department> departments = ViewBag.Departments;
+    List<Designation> designations = ViewBag.Designations;
+}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Save Teacher</title>
+    <style>
+        label.error {
+            color: red;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <form method="POST" id="saveTeacherForm">
+            <table>
+                <tr>
+                    <td><label for="TeacherName">Name</label></td>
+                    <td><input type="text" id="TeacherName" name="TeacherName" /></td>
+                </tr>
+                <tr>
+                    <td><label for="TeacherAddress">Address</label></td>
+                    <td><textarea id="TeacherAddress" name="TeacherAddress" rows="4" cols="40"></textarea></td>
+                </tr>
+                <tr>
+                    <td><label for="TeacherEmail">Email</label></td>
+                    <td><input type="text" id="TeacherEmail" name="TeacherEmail" /></td>
+                </tr>
+                <tr>
+                    <td><label for="TeacherContactNo">Contact No.</label></td>
+                    <td><input type="text" id="TeacherContactNo" name="TeacherContactNo" /></td>
+                </tr>
+                <tr>
+                    <td><label for="">Designation</label></td>
+                    <td>
+                        <select id="DesignationId" name="DesignationId">
+                            <option value="">--Select--</option>
+                            @foreach (Designation designation in designations)
+                            {
+                                <option value="@designation.DesignationId">@designation.DesignationName</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="">Department</label></td>
+                    <td>
+                        <select id="DepartmentId" name="DepartmentId">
+                            <option value="">--Select--</option>
+                            @foreach (Department department in departments)
+                            {
+                                <option value="@department.DepartmentId">@department.DepartmentName</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="CreditToBeTaken">Credit to be taken</label></td>
+                    <td><input type="text" id="CreditToBeTaken" name="CreditToBeTaken" /></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Save" /></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    @ViewBag.Message
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script>
+        $("#saveTeacherForm").validate({
+            rules: {
+                TeacherName: "required",
+                TeacherAddress: "required",
+                TeacherEmail: {
+                    required: true,
+                    email: true
+                },
+                TeacherContactNo: {
+                    required: true,
+                    number: true,
+                    maxlength: 11,
+                    minlength: 11
+                },
+                DesignationId: "required",
+                DepartmentId: "required",
+                CreditToBeTaken: {
+                    required: true,
+                    min: 0
+                } 
+            },
+            messages: {
+                TeacherName: "Name is required",
+                TeacherAddress: "Address is required",
+                TeacherEmail: {
+                    required: "Email is required",
+                    email: "Please enter a valid email address"
+                },
+                TeacherContactNo: {
+                    required: "Contact No. is required",
+                    number: "Please enter a valid phone number",
+                    maxlength: "Please enter 11 digit phone number only",
+                    minlength: "Please enter 11 digit phone number only"
+                },
+                DesignationId: "Please select a designation",
+                DepartmentId: "Please select a department",
+                CreditToBeTaken: {
+                    required: "This field is required",
+                    min: "Credit can't be negative number"
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
+
