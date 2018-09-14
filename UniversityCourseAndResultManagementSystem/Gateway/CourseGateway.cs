@@ -18,7 +18,14 @@ namespace UniversityCourseAndResultManagementSystem.Gateway
             Command.Parameters.AddWithValue("courseCode", course.CourseCode);
             Command.Parameters.AddWithValue("courseName", course.CourseName);
             Command.Parameters.AddWithValue("courseCredit", course.CourseCredit);
-            Command.Parameters.AddWithValue("courseDescription", course.CourseDescription);
+            if (course.CourseDescription != null)
+            {
+                Command.Parameters.AddWithValue("courseDescription", course.CourseDescription);
+            }
+            else
+            {
+                Command.Parameters.AddWithValue("courseDescription", DBNull.Value);
+            }
             Command.Parameters.AddWithValue("departmentId", course.DepartmentId);
             Command.Parameters.AddWithValue("semesterid", course.SemesterId);
             Connection.Open();
