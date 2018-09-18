@@ -10,6 +10,7 @@ namespace UniversityCourseAndResultManagementSystem.Manager
     public class TeacherManager
     {
         TeacherGateway teacherGateway = new TeacherGateway();
+        CourseGateway courseGateway = new CourseGateway();
         public bool IsExist(string email)
         {
             return teacherGateway.IsExist(email);
@@ -26,6 +27,11 @@ namespace UniversityCourseAndResultManagementSystem.Manager
                 return "Teacher saved successfully.";
             }
             return "Failed to save the teacher";
+        }
+
+        public List<Teacher> GetTeachers()
+        {
+            return teacherGateway.GetTeachers();
         }
     }
 }

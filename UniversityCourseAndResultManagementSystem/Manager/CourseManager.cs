@@ -38,5 +38,35 @@ namespace UniversityCourseAndResultManagementSystem.Manager
         {
             return courseGateway.IsExistCourseName(courseName);
         }
+
+        public List<Course> GetCourses()
+        {
+            return courseGateway.GetCourses();
+        }
+
+        public decimal GetCourseCredit(int teacherId)
+        {
+            int courseCredit = Convert.ToInt32(courseGateway.GetCourseCredit(teacherId));
+            return courseCredit;
+        }
+
+        public string AssignCourse(AssignCourse assignCourse)
+        {
+            if (courseGateway.IsExistCourse(assignCourse.CourseId))
+            {
+                return "This course code already assigned to a teacher.";
+            }
+            if (courseGateway.AssignCourse(assignCourse) > 0)
+            {
+
+                return "The course assigend to the teacher succcessfully.";
+            }
+            return "Failed to assign the course";
+        }
+
+        public bool IsExistCourse(int courseId)
+        {
+            return courseGateway.IsExistCourse(courseId);
+        }
     }
 }

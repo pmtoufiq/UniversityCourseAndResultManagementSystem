@@ -79,6 +79,7 @@ namespace UniversityCourseAndResultManagementSystem.Gateway
                 departmentList.Add(department);
             }
             Connection.Close();
+            Reader.Close();
             return departmentList;
         }
     }

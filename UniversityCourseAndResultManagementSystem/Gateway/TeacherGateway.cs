@@ -47,5 +47,34 @@ namespace UniversityCourseAndResultManagementSystem.Gateway
                 return false;
             }
         }
+
+        public List<Teacher> GetTeachers()
+        {
+            Connection.Open();
+            Query = "Select * from TeacherTable";
+            Command = new SqlCommand(Query, Connection);
+            Reader = Command.ExecuteReader();
+            List<Teacher> teacherList = new List<Teacher>();
+            while (Reader.Read())
+            {
+                Teacher teacher = new Teacher()
+                {
+                    TeacherId = (int)Reader["TeacherId"],
+                    TeacherName = (string)Reader["TeacherName"],
+                    TeacherAddress = (string)Reader["TeacherAddress"],
+                    TeacherEmail = (string)Reader["TeacherEmail"],
+                    TeacherContactNo = (string)Reader["TeacherContactNo"],
+                    DesignationId = (int)Reader["DesignationId"],
+                    DepartmentId = (int)Reader["DepartmentId"],
+                    CreditToBeTaken = (decimal)Reader["CreditToBeTaken"],
+                };
+
+
+                teacherList.Add(teacher);
+            }
+            Connection.Close();
+            Reader.Close();
+            return teacherList;
+        }
     }
 }

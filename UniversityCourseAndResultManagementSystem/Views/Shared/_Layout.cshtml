@@ -22,6 +22,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Course", "SaveCourse", "Course")</li>
                     <div class="dropdown">
                         <button class="dropbtn">
                             Department
@@ -32,8 +33,16 @@
                             <li>@Html.ActionLink("Show Department", "ShowDepartment", "Department")</li>
                         </div>
                     </div>
-                    <li>@Html.ActionLink("Course", "SaveCourse", "Course")</li>
-                    <li>@Html.ActionLink("Teacher", "SaveTeacher", "Teacher")</li>
+                    <div class="dropdown">
+                        <button class="dropbtn">
+                            Teacher
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <li>@Html.ActionLink("Save Teacher", "SaveTeacher", "Teacher")</li>
+                            <li>@Html.ActionLink("Assign Teacher", "AssignCourse", "Teacher")</li>
+                        </div>
+                    </div>
                 </ul>
 
                 @Html.Partial("_LoginPartial")

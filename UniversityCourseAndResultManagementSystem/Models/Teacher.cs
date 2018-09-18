@@ -15,5 +15,6 @@ namespace UniversityCourseAndResultManagementSystem.Models
         public int DesignationId { get; set; }
         public int DepartmentId { get; set; }
         public decimal CreditToBeTaken { get; set; }
+        public decimal RemainingCredit { get; set; }
     }
 }

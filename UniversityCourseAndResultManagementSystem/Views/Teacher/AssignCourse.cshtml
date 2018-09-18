@@ -1,0 +1,177 @@
+﻿@{
+    ViewBag.Title = "Assign Course";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string message = ViewBag.Message;
+}
+
+<h2>Assign Course To Teacher</h2>
+<style>
+    label.error {
+        color: red;
+        font-style: italic;
+    }
+</style>
+
+<form method="POST" id="myForm">
+    <table>
+        <tr>
+            <td>
+                <label for="departmentId">Department</label>
+            </td>
+            <td>
+                <select name="departmentId" id="departmentId">
+                    <option value="">Select Department</option>
+                    @foreach (var department in ViewBag.Departments)
+                    {
+                        <option value="@department.DepartmentId">@department.DepartmentName</option>
+                    }
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label for="teacherId">Teacher</label></td>
+            <td>
+                <select name="teacherId" id="teacherId">
+                    <option value="">Select Teacher</option>
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label for="CreditToBeTaken">Credit to be taken</label></td>
+            <td><input type="text" id="CreditToBeTaken" name="CreditToBeTaken" readonly="readonly" /></td>
+        </tr>
+        <tr>
+            <td><label for="RemainingCredit">Remaining credit</label></td>
+            <td><input type="text" id="RemainingCredit" name="RemainingCredit" readonly="readonly" /></td>
+        </tr>
+
+        <tr>
+            <td><label for="courseId">Course code</label></td>
+            <td>
+                <select name="courseId" id="courseId">
+                    <option value="">Select Teacher</option>
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label for="CourseName">Course name</label></td>
+            <td><input type="text" id="CourseName" name="CourseName" readonly="readonly" /></td>
+        </tr>
+        <tr>
+            <td><label for="CourseCredit">Course credit</label></td>
+            <td><input type="text" id="CourseCredit" name="CourseCredit" readonly="readonly" /></td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Assign" class="btn btn-default" /></td>
+        </tr>
+    </table>
+    @ViewBag.Message
+</form>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+            $("#departmentId").change(function() {
+                var deptId = $("#departmentId").val();
+
+                $("#teacherId").empty();
+                $("#courseId").empty();
+
+                var json = { DepartmentId: deptId};
+                $.ajax({
+                    type: "POST",
+                    @*url: '@Url.Action("GetStudentsByDepartmentId", "Department")',*@
+                    url: '/Teacher/GetTeachersByDepartmentId',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function(teachers) {
+                        $.each(teachers, function(key, value) {
+                            //alert(value.StudentId + " " +value.Name);
+                            $("#teacherId").append('<option value=' + value.TeacherId + '>' + value.TeacherName + '</option>');
+
+                        });
+                    }
+                });
+
+                loadCourseByDepeartmentId(deptId);
+
+            });
+
+            function loadCourseByDepeartmentId(deptId) {
+                var json = { DepartmentId: deptId };
+                $.ajax({
+                    type: "POST",
+                    url: '/Course/GetCoursesByDepartmentId',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function(courses) {
+                        $.each(courses, function(key, value) {
+                            $("#courseId").append('<option value=' + value.CourseId + '>' + value.CourseCode + '</option>');
+                        });
+                    }
+                });
+
+            }
+
+            $("#teacherId").change(function() {
+                var teacherId = $("#teacherId").val();
+                $("#CreditToBeTaken").val('');
+                $("#RemainingCredit").val('');
+                var json = { TeacherId: teacherId };
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetTeacherById", "Teacher")',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function(data) {
+                        //alert(data.RegNo);
+                        $("#CreditToBeTaken").val(data.CreditToBeTaken);
+                        $("#RemainingCredit").val(data.RemainingCredit);
+                    }
+                });
+            });
+
+            $("#courseId").change(function() {
+                var courseId = $("#courseId").val();
+                $("#CourseName").val('');
+                $("#CourseCredit").val('');
+
+                var json = { CourseId: courseId };
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetCourseById", "Course")',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function(data) {
+                        //alert(data.RegNo);
+                        $("#CourseName").val(data.CourseName);
+                        $("#CourseCredit").val(data.CourseCredit);
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script>
+    $("#myForm").validate({
+        rules: {
+            departmentId: "required",
+            teacherId: "required",
+            courseId: "required"
+        },
+        messages: {
+            departmentId: "Please select a department",
+            teacherId: "Please select a teacher",
+            courseId: "Please select a course"
+        }
+    });
+</script>

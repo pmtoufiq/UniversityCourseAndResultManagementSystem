@@ -31,5 +31,23 @@ namespace UniversityCourseAndResultManagementSystem.Controllers
             ViewBag.Semesters = semesterManager.GetSemesters();
             return View();
         }
+        private List<Course> GetCourses()
+        {
+            return courseManager.GetCourses();
+        }
+
+        public JsonResult GetCourseById(int courseId)
+        {
+            var courses = GetCourses();
+            Course course = courses.FirstOrDefault(c => c.CourseId == courseId);
+            return Json(course);
+        }
+
+        public JsonResult GetCoursesByDepartmentId(int DepartmentId)
+        {
+            var courses = GetCourses();
+            var courseList = courses.Where(a => a.DepartmentId == DepartmentId).ToList();
+            return Json(courseList);
+        }
 	}
 }
