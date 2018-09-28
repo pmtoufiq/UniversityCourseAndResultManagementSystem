@@ -1,0 +1,137 @@
+﻿@using System.Web.UI.WebControls
+@model UniversityCourseAndResultManagementSystem.Models.AllocateClassRoom
+@{
+    ViewBag.Title = "AllocateClassRoom";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Allocate Class Room</title>
+
+    <style>
+        .field-validation-error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "myForm" }))
+        {
+            <fieldset>
+                <legend>Allocate Class Rooms</legend>
+
+                <table>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.DepartmentId)
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(m => m.DepartmentId, new SelectList(ViewBag.Departments, "DepartmentId", "DepartmentName"), "--Select--")
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(m => m.DepartmentId)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.CourseId)
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.CourseId, new List<SelectListItem>(), "--Select--", new { @id = "CourseId" });
+                        </td>
+                        @*<td>
+                            <select name="courseId" id="courseId">
+                                <option value="">Select Course</option>
+                            </select>
+                        </td>*@
+                        <td>
+                            @Html.ValidationMessageFor(m => m.CourseId)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.RoomId)
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(m => m.RoomId, new SelectList(ViewBag.Rooms, "RoomId", "RoomNo"), "--Select--")
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(m => m.RoomId)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.DayId)
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(m => m.DayId, new SelectList(ViewBag.Days, "DayId", "DayName"), "--Select--")
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(m => m.DayId)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.From)
+                        </td>
+                        <td>
+                         @*@Html.TimePickerFor(m => m.From)*@
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(m => m.From)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.To)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.To)
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(m => m.To)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="submit" value="Save" />
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        }
+    </div> 
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+    <script type="text/javascript">
+       
+            $(document).ready(function() {
+            $("#DepartmentId").change(function () {
+                console.log("click");
+                var deptId = $("#DepartmentId").val();
+                $("#CourseId").empty();
+                var json = { DepartmentId: deptId };
+                $.ajax({
+                    type: "POST",
+                    url: '/Class/GetCoursesByDepartmentId',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function (courses) {
+                        $.each(courses, function (key, value) {
+                            $("#CourseId").append('<option value=' + value.CourseId + '>' + value.CourseName + '</option>');
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -6,7 +6,9 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    <link href="~/CSS/myStyle.css" rel="stylesheet" />
+    <link href="~/CSS/myStyle.css" rel="stylesheet"/>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -17,12 +19,23 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("University Course and Result Management System", "Index", "Home", null, new { @class = "navbar-brand" })
+                @Html.ActionLink("UCRMS", "Index", "Home", null, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Course", "SaveCourse", "Course")</li>
+                    <li>@Html.ActionLink("Save Teacher", "SaveTeacher", "Teacher")</li>
+                    <li>@Html.ActionLink("Allocate Class", "Save", "Class")</li>
+                    <div class="dropdown">
+                        <button class="dropbtn">
+                            Course
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <li>@Html.ActionLink("Save course", "SaveCourse", "Course")</li>
+                            <li>@Html.ActionLink("Assign Course", "AssignCourse", "Teacher")</li>
+                        </div>
+                    </div>
                     <div class="dropdown">
                         <button class="dropbtn">
                             Department
@@ -31,16 +44,6 @@
                         <div class="dropdown-content">
                             <li>@Html.ActionLink("Save Department", "SaveDepartment", "Department")</li>
                             <li>@Html.ActionLink("Show Department", "ShowDepartment", "Department")</li>
-                        </div>
-                    </div>
-                    <div class="dropdown">
-                        <button class="dropbtn">
-                            Teacher
-                            <i class="fa fa-caret-down"></i>
-                        </button>
-                        <div class="dropdown-content">
-                            <li>@Html.ActionLink("Save Teacher", "SaveTeacher", "Teacher")</li>
-                            <li>@Html.ActionLink("Assign Teacher", "AssignCourse", "Teacher")</li>
                         </div>
                     </div>
                 </ul>
@@ -63,6 +66,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/bootstrapjs")
     @RenderSection("scripts", required: false)
 </body>
 </html>

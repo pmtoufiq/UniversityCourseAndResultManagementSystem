@@ -76,22 +76,22 @@
 @section scripts
 {
     <script>
-        $(document).ready(function() {
-            $("#departmentId").change(function() {
+        $(document).ready(function () {
+            $("#departmentId").change(function () {
                 var deptId = $("#departmentId").val();
 
                 $("#teacherId").empty();
                 $("#courseId").empty();
 
-                var json = { DepartmentId: deptId};
+                var json = { DepartmentId: deptId };
                 $.ajax({
                     type: "POST",
                     @*url: '@Url.Action("GetStudentsByDepartmentId", "Department")',*@
                     url: '/Teacher/GetTeachersByDepartmentId',
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify(json),
-                    success: function(teachers) {
-                        $.each(teachers, function(key, value) {
+                    success: function (teachers) {
+                        $.each(teachers, function (key, value) {
                             //alert(value.StudentId + " " +value.Name);
                             $("#teacherId").append('<option value=' + value.TeacherId + '>' + value.TeacherName + '</option>');
 
@@ -110,8 +110,8 @@
                     url: '/Course/GetCoursesByDepartmentId',
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify(json),
-                    success: function(courses) {
-                        $.each(courses, function(key, value) {
+                    success: function (courses) {
+                        $.each(courses, function (key, value) {
                             $("#courseId").append('<option value=' + value.CourseId + '>' + value.CourseCode + '</option>');
                         });
                     }
@@ -119,7 +119,7 @@
 
             }
 
-            $("#teacherId").change(function() {
+            $("#teacherId").change(function () {
                 var teacherId = $("#teacherId").val();
                 $("#CreditToBeTaken").val('');
                 $("#RemainingCredit").val('');
@@ -129,15 +129,17 @@
                     url: '@Url.Action("GetTeacherById", "Teacher")',
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify(json),
-                    success: function(data) {
+                    success: function (data) {
                         //alert(data.RegNo);
                         $("#CreditToBeTaken").val(data.CreditToBeTaken);
                         $("#RemainingCredit").val(data.RemainingCredit);
+                        RemainingCredit = $("#RemainingCredit").val();
+                        
                     }
                 });
             });
 
-            $("#courseId").change(function() {
+            $("#courseId").change(function () {
                 var courseId = $("#courseId").val();
                 $("#CourseName").val('');
                 $("#CourseCredit").val('');
@@ -148,12 +150,22 @@
                     url: '@Url.Action("GetCourseById", "Course")',
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify(json),
-                    success: function(data) {
+                    success: function (data) {
                         //alert(data.RegNo);
                         $("#CourseName").val(data.CourseName);
                         $("#CourseCredit").val(data.CourseCredit);
+                        CourseCredit = $("#CourseCredit").val();
+                        
                     }
                 });
+            });
+            var RemainingCredit = null;
+            var CourseCredit = null;
+            $("form").submit(function (e) {
+                
+                if ((RemainingCredit - CourseCredit)<0) {
+                    confirm("Are you sure?");
+                }
             });
         });
     </script>

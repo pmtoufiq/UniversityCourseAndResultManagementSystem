@@ -64,6 +64,7 @@ namespace UniversityCourseAndResultManagementSystem.Controllers
             var teachers = GetTeachers();
             Teacher teacher = teachers.FirstOrDefault(c => c.TeacherId == teacherId);
             teacher.RemainingCredit = teacher.CreditToBeTaken - GetCourseCredit(teacherId);
+            
             return Json(teacher);
         }
 
